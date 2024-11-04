@@ -10,6 +10,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class CaesarFrame extends JFrame {
     private JTextField inputField;
@@ -69,6 +71,7 @@ public class CaesarFrame extends JFrame {
     private void intializeInput(){
         inputField = new JTextField();
         inputField.setColumns(20);
+        inputField.addKeyListener(new InputFieldKeyListener());
     }
 
     private void intializeOutput(){
@@ -85,5 +88,15 @@ public class CaesarFrame extends JFrame {
             outputField.setText(encoder.encode(inputField.getText()));
         }
 
+    }
+
+    private class InputFieldKeyListener extends KeyAdapter{
+        private Encoder encoder = new Encoder();
+        
+        @Override
+        public void keyPressed(KeyEvent e){
+            encoder.setShift((char)comboBox.getSelectedItem());
+            outputField.setText((outputField.getText())+encoder.encode("" + e.getKeyChar()));
+        }
     }
 }
